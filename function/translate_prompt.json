@@ -1,0 +1,4 @@
+{
+    "en":"<bos>Translate to english\n<pad>Korean: {0}\n<pad>English:",
+    "ko":"<bos>Translate to korean\n<pad>English: {0}\n<pad>Korean:"
+}
