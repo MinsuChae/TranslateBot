@@ -2,16 +2,21 @@ from .ping import ping
 from .translate import translate
 __func__ = {'ping': ping,'translate':translate}
 
-def command(**kwargs) -> str | None:
+def command(args:list) -> str | None:
+    """
     if 'cmd' not in kwargs:
         return None
-    cmd = kwargs['cmd']
+    """
+    cmd = args[0]
+
     if type(cmd) == str and cmd.startswith("!"):
         cmd = cmd.lower()[1:]
-        option = ""
-        msg = ""
-        if 'msg' in kwargs and type(kwargs['msg']) == str :
-            msg = kwargs['msg']
+        if len(args)>1:
+            msg = args[1]
+        else:
+            msg = None
+        option = None
+        if msg is not None and type(msg) == str :
             parsing = msg.split(maxsplit=1)
             parsing = [text.strip() for text in parsing]
 

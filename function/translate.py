@@ -1,45 +1,33 @@
 import json
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+import os
 
 SUPPORT_LANGUAGES = ['en','ko']
 MODEL = "Minsu-Chae/gemma-2b-translate"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL)
 model = AutoModelForCausalLM.from_pretrained(MODEL)
+translate_generator = pipeline('text-generation', model=model, tokenizer=tokenizer)
+TOKEN = "<pad>Translate text:"
 def translate(**kwargs)->str | None:
     if 'msg' not in kwargs:
-        return "!translate original_language target_language text\n.It support only english(en) and korean(ko)."
-    if 'original' not in kwargs or 'target' not in kwargs :
-        if 'option' in kwargs:
-            msg = kwargs['msg']
-            parsing = msg.split(maxsplit=1)
-            parsing = [text.strip() for text in parsing]
-
-            original = kwargs['option'].lower()
-            target = parsing[0].lower()
-            msg = parsing[1]
-        else:
-            return "!translate original_language target_language text\n.It support only english(en) and korean(ko)."
+        return "!translate target_language text\n.It support only english(en) and korean(ko)."
+    if 'option' not in kwargs :
+        return "!translate target_language text\n.It support only english(en) and korean(ko)."
     else:
-        original = kwargs['original'].lower()
-        target = kwargs['target'].lower()
+        target = kwargs['option'].lower()
         msg = kwargs['msg']
 
-    if original == target:
-        return "Two languages are same."
-    elif original not in SUPPORT_LANGUAGES or target not in SUPPORT_LANGUAGES:
+    if target not in SUPPORT_LANGUAGES:
         return "It support only english(en) and korean(ko)."
 
-    with open("translate_prompt.json","r") as file:
+    with open("function/translate_prompt.json","r") as file:
         template = json.load(file)
 
     input_text = template[target].format(msg)
-    input_ids = tokenizer(input_text, return_tensors="pt")
-
-    outputs = model.generate(**input_ids)
-    translate_msg = tokenizer.decode(outputs[0])
+    outputs = translate_generator(input_text, max_length=len(input_text)+50, num_beams=5, early_stopping=True)[0]['generated_text']
+    translate_text = outputs[outputs.find(TOKEN)+len(TOKEN):]
     del input_text
-    del input_ids
     del outputs
-    return translate_msg
+    return translate_text
 
