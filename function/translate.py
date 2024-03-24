@@ -7,7 +7,7 @@ MODEL = "Minsu-Chae/gemma-2b-translate"
 tokenizer = AutoTokenizer.from_pretrained(MODEL)
 model = AutoModelForCausalLM.from_pretrained(MODEL)
 translate_generator = pipeline('text-generation', model=model, tokenizer=tokenizer)
-TOKEN = "<pad>Translate text:"
+TOKEN = "<start_of_turn>model\n<pad>"
 
 def translate(**kwargs)->str | None:
     if 'msg' not in kwargs:
