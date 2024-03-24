@@ -1,6 +1,5 @@
 import json
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
-import os
 
 SUPPORT_LANGUAGES = ['en','ko']
 MODEL = "Minsu-Chae/gemma-2b-translate"
@@ -9,6 +8,7 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL)
 model = AutoModelForCausalLM.from_pretrained(MODEL)
 translate_generator = pipeline('text-generation', model=model, tokenizer=tokenizer)
 TOKEN = "<pad>Translate text:"
+
 def translate(**kwargs)->str | None:
     if 'msg' not in kwargs:
         return "!translate target_language text\n.It support only english(en) and korean(ko)."
