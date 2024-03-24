@@ -25,7 +25,7 @@ def translate(**kwargs)->str | None:
         template = json.load(file)
 
     input_text = template[target].format(msg)
-    outputs = translate_generator(input_text, max_length=len(input_text)+50, num_beams=5, early_stopping=True)[0]['generated_text']
+    outputs = translate_generator(input_text, max_length=len(input_text)+50, num_beams=5, early_stopping=True, temperature=0.7)[0]['generated_text']
     translate_text = outputs[outputs.find(TOKEN)+len(TOKEN):]
     del input_text
     del outputs

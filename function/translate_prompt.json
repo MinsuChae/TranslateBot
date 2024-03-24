@@ -1,4 +1,4 @@
 {
-    "en":"<bos>Translate to english\nDetermine the language source of the text and translation to English.<pad>Text:{0}\n<pad>Translate text:",
-    "ko":"<bos>Translate to korean\\nDetermine the language source of the text and translation to Korean.<pad>Text:{0}\\n<pad>Translate text:"
+    "en":"<bos>To have be right grammar and sentence structure.\nUse words from field of expertise.\nTo have be done professionally and academically.\n<start_of_turn>Determine the language source of the text and translation to English.<pad>Text\n{0}<end_of_turn><start_of_turn>model\n<pad>",
+    "ko":"<bos>To have be right grammar and sentence structure.\nUse words from field of expertise.\nTo have be done professionally and academically.\n<start_of_turn>Determine the language source of the text and translation to Korean.<pad>Text\n{0}<end_of_turn><start_of_turn>model\n<pad>"
 }
